@@ -1,0 +1,32 @@
+corr<-function(directory,threshold=0)
+{
+  co<-numeric()
+  wd<-getwd()
+  j<-1
+  i<-1
+  while(i<=332)
+  {
+    if (i<10)
+      ch<-"00"
+    else if (i>=10&i<100)
+      ch<-"0"
+    else
+      ch<-""
+    x<-read.csv(file.path(wd,directory,paste(ch,i,".csv",sep="")))
+    cases<-sum(!is.na(x[["sulfate"]])&!is.na(x[["nitrate"]]))
+    if(cases<threshold)
+    {
+      i<-i+1
+      next
+    }
+    case<-!is.na(x[["sulfate"]])&!is.na(x[["nitrate"]])
+    a<-x[["sulfate"]]
+    b<-x[["nitrate"]]
+    a<-a[case]
+    b<-b[case]
+    co[j]<-cor(a,b)
+    i<-i+1
+    j<-j+1
+  }
+  co
+}
